@@ -31,9 +31,12 @@ class WheelGameAI:
     
     # bets should look like something lik this [0.00,1.00,2.00,0.00,3.00]
     def placeBets(self, bets):
+        self.bet_count += 1
+
         total_bet = sum(bets)
         if total_bet > self.balance:
             print('invalid bet')
+            print('SETTING TO TRUE 1')
             return self.balance, None, -10, True
         
         # Spin The Wheel
@@ -58,32 +61,41 @@ class WheelGameAI:
         if all(b == 0 for b in bets):
             self.zero_bet_count += 1
             if self.zero_bet_count >= 5:
-                self.zero_bet_count = 0  # Reset the counter
+                print('SETTING TO TRUE 2')
+                self.isOver = True  # Reset the counter
+                print("BAD AI")
                 return self.balance, None, -100000, True
         else:
             self.zero_bet_count = 0
 
         if self.balance <= 0:
+            print('SETTING TO TRUE 3')
             self.isOver = True
+            print("ON HO")
             return self.balance, self.last_outcome, reward, self.isOver
         elif self.bet_count >= 10:
-            bonus = reward + 4000
+            print('SETTING TO TRUE 4')
             self.isOver = True
-            self.bet_count += 1
             print("WOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO YOU DID IT YIPEEEEEEEE")
-            return self.balance, self.last_outcome, bonus, self.isOver
-        else:
-            return self.balance, self.last_outcome, reward, self.isOver
+            return self.balance, self.last_outcome, reward + 40, self.isOver
+        
+
+        print("??????")
+        print(self.isOver)
+        return self.balance, self.last_outcome, reward, self.isOver
 
 
 
 
 
     def reset(self):
+        print('RESET')
         # Reset game state to start a new game
         self.balance = 10  # Reset balance to initial value
         self.last_outcome = None  # Reset the last outcome
         self.bet_count = 0
+        self.zero_bet_count = 0
+        self.isOver = False
         # Any other state reset actions
 
 

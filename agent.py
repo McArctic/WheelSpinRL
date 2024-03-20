@@ -52,7 +52,7 @@ class Agent:
         final_move = [0.00,0.00,0.00,0.00,0.00]
 
         # Exploration v explotaion
-        self.epsilon = 80 - self.n_games
+        self.epsilon = 180 - self.n_games
         if random.randint(0,200) < self.epsilon:
             # Exploration: Randomly distribute the balance across the actions,
             # ensuring the sum does not exceed the balance.
@@ -112,7 +112,7 @@ def train():
         # remember
         agent.remember(state_old, final_move, rewards, state_new, done)
 
-
+        
         if done:
             # train long memory, plot result
             game.reset()
